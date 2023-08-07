@@ -16,7 +16,7 @@ const communities = ['technology', 'science', 'news', 'Politics', 'programming',
     SM_WITH_BREAK: true,
   });
 
-  // Redis to keep track of white posts have been already been summaried.
+  // Redis to keep track of which posts have been already been summaried.
   const client = createClient();
   client.on('error', (err) => {
     throw new Error(err.toString());
@@ -38,8 +38,17 @@ const communities = ['technology', 'science', 'news', 'Politics', 'programming',
   const posts = await discuit.getPosts('latest', 50);
   for (let i = 0; i < posts.length; i++) {
     const post = posts[i];
-
     console.log(`Checking https://discuit.net/${post.communityName}/post/${post.publicId}`);
+
+    // Are we watching this community?
+    if (!communities.includes(post.communityName)) {
+      console.log(
+        `Skipping https://discuit.net/${post.communityName}/post/${post.publicId} as it is not in the list of communities to summarize.`,
+      );
+      continue;
+    }
+
+    // Has the post already been summaried?
     const isSummaried = await client.get(`discuit-autotldr-read-${post.id}`);
     if (isSummaried) {
       console.log(
@@ -48,26 +57,29 @@ const communities = ['technology', 'science', 'news', 'Politics', 'programming',
       continue;
     }
 
-    if (communities.includes(post.communityName) && post.link) {
-      await client.set(`discuit-autotldr-read-${post.id}`, 'true');
+    // Skip when the post does not include a link.
+    await client.set(`discuit-autotldr-read-${post.id}`, 'true');
+    if (!post.link) {
+      console.log(
+        `Skipping https://discuit.net/${post.communityName}/post/${post.publicId} as it does not have a link.`,
+      );
+      continue;
+    }
 
-      console.log(`Fetching summary for ${post.link.url}`);
-      const result = await summary.summarizeUrl(post.link.url);
-      if (result && result.sm_api_content) {
-        const posted = await discuit.postComment(
-          post.publicId,
-          `This is the best tl;dr I could make, original reduced by ${
-            result.sm_api_content_reduced
-          }.\n\n----\n\n${result.sm_api_content.replace(
-            /\[BREAK]/g,
-            '\n\n',
-          )}\n\n----\n\nI am a bot.`,
-        );
+    // Summarize!
+    console.log(`Fetching summary for ${post.link.url}`);
+    const result = await summary.summarizeUrl(post.link.url);
+    if (result && result.sm_api_content) {
+      const posted = await discuit.postComment(
+        post.publicId,
+        `This is the best tl;dr I could make, original reduced by ${
+          result.sm_api_content_reduced
+        }.\n\n----\n\n${result.sm_api_content.replace(/\[BREAK]/g, '\n\n')}\n\n----\n\nI am a bot.`,
+      );
 
-        console.log(
-          `Posted to https://discuit.net/${posted.communityName}/post/${posted.postPublicId}.`,
-        );
-      }
+      console.log(
+        `Posted to https://discuit.net/${posted.communityName}/post/${posted.postPublicId}.`,
+      );
     }
   }
 
