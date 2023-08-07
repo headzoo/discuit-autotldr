@@ -18,6 +18,7 @@
   "dependencies": {
     "dotenv": "^16.3.1",
     "redis": "^4.6.7",
-    "smmry": "^1.0.2"
+    "smmry": "^1.0.2",
+    "winston": "^3.10.0"
   }
 }
