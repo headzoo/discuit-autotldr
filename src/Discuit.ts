@@ -78,7 +78,7 @@ export class Discuit {
    *
    * Also stores the token internally for future requests.
    */
-  public getToken = async (): Promise<any> => {
+  public getToken = async (): Promise<string | null> => {
     return await fetch('https://discuit.net/api/_initial').then((res) => {
       this.cookie = res.headers.get('set-cookie');
       this.csrfToken = res.headers.get('csrf-token');
