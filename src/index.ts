@@ -4,7 +4,9 @@ import { createClient } from 'redis';
 import { Discuit } from './Discuit';
 import { logger } from './logger';
 
-dotenv.config();
+dotenv.config({
+  path: `${__dirname}/../.env`,
+});
 
 // The communities that should be summarized.
 const communities = ['technology', 'science', 'news', 'Politics', 'programming', 'Entertainment'];
