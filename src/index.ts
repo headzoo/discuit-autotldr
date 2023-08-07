@@ -18,6 +18,7 @@ const communities = [
   'Entertainment',
   'Europe',
   'AussieNews',
+  'reactjs',
 ];
 
 // The domains that shouldn't be summarized because smmry breaks.
