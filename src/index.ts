@@ -31,14 +31,12 @@ const communities = ['technology', 'science', 'news', 'Politics', 'programming',
     const post = posts[i];
     console.log(`Checking https://discuit.net/${post.communityName}/post/${post.publicId}`);
 
-    if (post.publicId !== 'YTox45iq') {
-      const checked = await client.get(`discuit-autotldr-read-${post.id}`);
-      if (checked) {
-        console.log(
-          `Skipping https://discuit.net/${post.communityName}/post/${post.publicId} as it has already been checked.`,
-        );
-        continue;
-      }
+    const checked = await client.get(`discuit-autotldr-read-${post.id}`);
+    if (checked) {
+      console.log(
+        `Skipping https://discuit.net/${post.communityName}/post/${post.publicId} as it has already been checked.`,
+      );
+      continue;
     }
 
     if (communities.indexOf(post.communityName) !== -1 && post.link) {
@@ -56,9 +54,10 @@ const communities = ['technology', 'science', 'news', 'Politics', 'programming',
             '\n\n',
           )}\n\n----\n\nI am a bot.`,
         );
-        console.log(posted);
 
-        console.log(`Posted to https://discuit.net/${posted.communityName}/post/${posted.id}.`);
+        console.log(
+          `Posted to https://discuit.net/${posted.communityName}/post/${posted.postPublicId}.`,
+        );
       }
     }
   }

@@ -18,6 +18,7 @@ export interface Post {
   id: string;
   type: string;
   publicId: string;
+  postPublicId: string;
   userId: string;
   username: string;
   userGroup: string;
@@ -71,7 +72,8 @@ export interface User {
  */
 export class Discuit {
   public debugging = true;
-  public readonly userAgent = 'Autotldr Bot (v1.0.0)';
+  public readonly userAgent =
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36';
   public readonly baseUrl = 'https://discuit.net/api';
   public user: User | null;
   private csrfToken: string | null = null;
@@ -209,16 +211,16 @@ export class Discuit {
 
     return await fetch(`${this.baseUrl}${path}`, config).then((res) => {
       if (res.headers.get('set-cookie')) {
-        this.cookie = res.headers.get('set-cookie');
+        /*this.cookie = res.headers.get('set-cookie');
         if (this.debugging) {
           console.log(`Got cookies: "${this.cookie}"`);
-        }
+        }*/
       }
       if (res.headers.get('csrf-token')) {
-        this.csrfToken = this.formatToken(res.headers.get('csrf-token'));
+        /*this.csrfToken = this.formatToken(res.headers.get('csrf-token'));
         if (this.debugging) {
           console.log(`Got csrf token: "${this.csrfToken}"`);
-        }
+        }*/
       }
 
       return res;
@@ -239,7 +241,7 @@ export class Discuit {
       token
         .split(',')
         .filter((v) => v.trim())
-        .shift()
+        .pop()
         ?.trim() || ''
     );
   };
