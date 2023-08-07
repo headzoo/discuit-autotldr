@@ -57,8 +57,12 @@ const communities = ['technology', 'science', 'news', 'Politics', 'programming',
       continue;
     }
 
-    // Skip when the post does not include a link.
+    // Flag the post as summaried. Whether it has a link or whether the bot successfully
+    // writes a comment doesn't matter. We'll flag it now, so it doesn't keep coming back
+    // around in case posting the comment is failing for some reason.
     await client.set(`discuit-autotldr-read-${post.id}`, 'true');
+
+    // Skip when the post does not include a link.
     if (!post.link) {
       console.log(
         `Skipping https://discuit.net/${post.communityName}/post/${post.publicId} as it does not have a link.`,
