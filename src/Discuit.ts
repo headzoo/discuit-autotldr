@@ -71,8 +71,8 @@ export interface User {
  * Represents a Discuit client.
  */
 export class Discuit {
-  public debugging = true;
-  public readonly userAgent =
+  public debugging = false;
+  public userAgent =
     'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36';
   public readonly baseUrl = 'https://discuit.net/api';
   public user: User | null;
@@ -241,7 +241,7 @@ export class Discuit {
       token
         .split(',')
         .filter((v) => v.trim())
-        .pop()
+        .shift()
         ?.trim() || ''
     );
   };
