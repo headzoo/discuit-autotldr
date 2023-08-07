@@ -12,7 +12,9 @@ dotenv.config({
 const communities = ['technology', 'science', 'news', 'Politics', 'programming', 'Entertainment'];
 
 // The domains that shouldn't be summarized because smmry breaks.
-const bannedDomains = ['news.yahoo.com'];
+const bannedDomains = [
+  'news.yahoo.com', // It's asking the bot to login.
+];
 
 (async () => {
   // Summaries are created by https://smmry.com
