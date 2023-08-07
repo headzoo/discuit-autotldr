@@ -14,6 +14,8 @@ const communities = ['technology', 'science', 'news', 'Politics', 'programming',
 // The domains that shouldn't be summarized because smmry breaks.
 const bannedDomains = [
   'news.yahoo.com', // It's asking the bot to login.
+  'www.nbcnews.com', // Complains about cookies.
+  'archive.is', // Compiling about the connection.
 ];
 
 (async () => {
