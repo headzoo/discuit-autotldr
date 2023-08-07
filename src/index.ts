@@ -37,7 +37,6 @@ const communities = ['technology', 'science', 'news', 'Politics', 'programming',
     process.exit(1);
   }
   const discuit = new Discuit();
-  discuit.debugging = true;
   const bot = await discuit.login(process.env.DISCUIT_USERNAME, process.env.DISCUIT_PASSWORD);
   if (!bot) {
     logger.error('Failed to login');
