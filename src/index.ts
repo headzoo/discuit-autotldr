@@ -11,6 +11,9 @@ dotenv.config({
 // The communities that should be summarized.
 const communities = ['technology', 'science', 'news', 'Politics', 'programming', 'Entertainment'];
 
+// The domains that shouldn't be summarized because smmry breaks.
+const bannedDomains = ['news.yahoo.com'];
+
 (async () => {
   // Summaries are created by https://smmry.com
   if (!process.env.DISCUIT_SMMRY_KEY) {
@@ -47,6 +50,7 @@ const communities = ['technology', 'science', 'news', 'Politics', 'programming',
   const posts = await discuit.getPosts('latest', 50);
   for (let i = 0; i < posts.length; i++) {
     const post = posts[i];
+    console.log(post);
     logger.info(`Checking https://discuit.net/${post.communityName}/post/${post.publicId}`);
 
     // Are we watching this community?
@@ -74,6 +78,14 @@ const communities = ['technology', 'science', 'news', 'Politics', 'programming',
       continue;
     }
 
+    // Skip when the post is a banned domain.
+    if (bannedDomains.includes(post.link.hostname)) {
+      logger.info(
+        `Skipping https://discuit.net/${post.communityName}/post/${post.publicId} as it is a banned domain.`,
+      );
+      continue;
+    }
+
     // Flag the post as summaried. Whether it has a link or whether the bot successfully
     // writes a comment doesn't matter. We'll flag it now, so it doesn't keep coming back
     // around in case posting the comment is failing for some reason. We'll just skip it
@@ -84,7 +96,7 @@ const communities = ['technology', 'science', 'news', 'Politics', 'programming',
     logger.info(`Fetching summary for ${post.link.url}`);
     const result = await summary.summarizeUrl(post.link.url);
     if (result && result.sm_api_content) {
-      const posted = await discuit.postComment(
+      /*const posted = await discuit.postComment(
         post.publicId,
         `This is the best tl;dr I could make, original reduced by ${
           result.sm_api_content_reduced
@@ -93,7 +105,7 @@ const communities = ['technology', 'science', 'news', 'Politics', 'programming',
 
       logger.info(
         `Posted to https://discuit.net/${posted.communityName}/post/${posted.postPublicId}.`,
-      );
+      );*/
     }
   }
 
