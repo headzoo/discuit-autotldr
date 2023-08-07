@@ -64,7 +64,6 @@ const bannedDomains = [
   const posts = await discuit.getPosts('latest', 50);
   for (let i = 0; i < posts.length; i++) {
     const post = posts[i];
-    console.log(post);
     logger.info(`Checking https://discuit.net/${post.communityName}/post/${post.publicId}`);
 
     // Are we watching this community?
