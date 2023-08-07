@@ -9,7 +9,16 @@ dotenv.config({
 });
 
 // The communities that should be summarized.
-const communities = ['technology', 'science', 'news', 'Politics', 'programming', 'Entertainment'];
+const communities = [
+  'technology',
+  'science',
+  'news',
+  'Politics',
+  'programming',
+  'Entertainment',
+  'Europe',
+  'AussieNews',
+];
 
 // The domains that shouldn't be summarized because smmry breaks.
 const bannedDomains = [
