@@ -98,7 +98,7 @@ const bannedDomains = [
     logger.info(`Fetching summary for ${post.link.url}`);
     const result = await summary.summarizeUrl(post.link.url);
     if (result && result.sm_api_content) {
-      /*const posted = await discuit.postComment(
+      const posted = await discuit.postComment(
         post.publicId,
         `This is the best tl;dr I could make, original reduced by ${
           result.sm_api_content_reduced
@@ -107,7 +107,7 @@ const bannedDomains = [
 
       logger.info(
         `Posted to https://discuit.net/${posted.communityName}/post/${posted.postPublicId}.`,
-      );*/
+      );
     }
   }
 
