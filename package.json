@@ -12,7 +12,7 @@
     "typescript": "^5.1.6"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp .env dist/.env",
     "watch": "nodemon --watch 'src/**/*.ts' --exec 'node --experimental-specifier-resolution=node --loader ts-node/esm' src/index.ts"
   },
   "dependencies": {

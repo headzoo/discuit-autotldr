@@ -11,6 +11,10 @@ const communities = ['technology', 'science', 'news', 'Politics', 'programming',
 
 (async () => {
   // Summaries are created by https://smmry.com
+  if (!process.env.DISCUIT_SMMRY_KEY) {
+    logger.error('Missing DISCUIT_SMMRY_KEY');
+    process.exit(1);
+  }
   const summary = smmry({
     SM_API_KEY: process.env.DISCUIT_SMMRY_KEY,
     SM_LENGTH: 5,
@@ -20,19 +24,22 @@ const communities = ['technology', 'science', 'news', 'Politics', 'programming',
   // Redis to keep track of which posts have been already been summaried.
   const client = createClient();
   client.on('error', (err) => {
-    throw new Error(err.toString());
+    logger.error(err.toString());
+    process.exit(1);
   });
   await client.connect();
 
   // Set up the discuit api and login the bot.
   if (!process.env.DISCUIT_USERNAME || !process.env.DISCUIT_PASSWORD) {
-    throw new Error('Missing DISCUIT_USERNAME or DISCUIT_PASSWORD');
+    logger.error('Missing DISCUIT_USERNAME or DISCUIT_PASSWORD');
+    process.exit(1);
   }
   const discuit = new Discuit();
   discuit.debugging = true;
   const bot = await discuit.login(process.env.DISCUIT_USERNAME, process.env.DISCUIT_PASSWORD);
   if (!bot) {
-    throw new Error('Failed to login');
+    logger.error('Failed to login');
+    process.exit(1);
   }
 
   // Check the latest posts and summarize them.
@@ -89,5 +96,6 @@ const communities = ['technology', 'science', 'news', 'Politics', 'programming',
     }
   }
 
+  logger.info('Done.');
   process.exit(0);
 })();
