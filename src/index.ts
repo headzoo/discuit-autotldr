@@ -7,7 +7,7 @@ import { createDatabase } from './database';
 import { Communities, BannedSites } from './modals';
 
 // Run the bot without posting comments. Primarily for testing.
-const isCommentingDisabled = true;
+const isCommentingDisabled = false;
 
 (async () => {
   await createDatabase();
@@ -76,7 +76,7 @@ const isCommentingDisabled = true;
           }.\n\n----\n\n${result.sm_api_content.replace(
             /\[BREAK]/g,
             '\n\n',
-          )}\n\n----\n\nI am a bot.`,
+          )}\n\n----\n\nI am a bot. Submit comments to the [discuit community](https://discuit.net/autotldr).`,
         );
 
         logger.info(
