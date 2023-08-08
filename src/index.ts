@@ -13,7 +13,7 @@ const isCommentingDisabled = false;
   await createDatabase();
   const summary = await createSmmry();
   const client = await createRedis();
-  const discuit = await createDiscuit();
+  const discuit = await createDiscuit(client);
 
   // The communities that should be summarized.
   const communities: string[] = [];
