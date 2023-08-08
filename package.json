@@ -1,6 +1,6 @@
 {
   "name": "discuit-autotldr",
-  "version": "1.0.0",
+  "version": "0.0.3",
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
@@ -16,6 +16,7 @@
     "watch": "nodemon --watch 'src/**/*.ts' --exec 'node --experimental-specifier-resolution=node --loader ts-node/esm' src/index.ts"
   },
   "dependencies": {
+    "@headz/discuit": "^0.0.1",
     "dotenv": "^16.3.1",
     "mysql": "^2.18.1",
     "mysql2": "^3.6.0",

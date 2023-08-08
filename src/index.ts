@@ -1,10 +1,13 @@
 import './config';
 import smmry from 'smmry';
 import { createClient } from 'redis';
-import { Discuit } from './Discuit';
+import { Discuit } from '@headz/discuit';
 import { sequelize } from './database';
 import { logger } from './logger';
 import { Communities, BannedSites } from './modals';
+
+// Run the bot without posting comments. Primarily for testing.
+const isCommentingDisabled = false;
 
 (async () => {
   // Summaries are created by https://smmry.com
@@ -105,7 +108,7 @@ import { Communities, BannedSites } from './modals';
       // Summarize!
       logger.info(`Fetching summary for ${post.link.url}`);
       const result = await summary.summarizeUrl(post.link.url);
-      if (result && result.sm_api_content) {
+      if (!isCommentingDisabled && result && result.sm_api_content) {
         const posted = await discuit.postComment(
           post.publicId,
           `This is the best tl;dr I could make, original reduced by ${
