@@ -1,5 +1,8 @@
 import winston from 'winston';
 
+/**
+ * The app logger.
+ */
 const logger = winston.createLogger({
   level: 'debug',
   format: winston.format.json(),
