@@ -17,7 +17,10 @@
   },
   "dependencies": {
     "dotenv": "^16.3.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.6.0",
     "redis": "^4.6.7",
+    "sequelize": "^6.32.1",
     "smmry": "^1.0.2",
     "winston": "^3.10.0"
   }

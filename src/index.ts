@@ -1,32 +1,10 @@
+import './config';
 import smmry from 'smmry';
-import dotenv from 'dotenv';
 import { createClient } from 'redis';
 import { Discuit } from './Discuit';
+import { sequelize } from './database';
 import { logger } from './logger';
-
-dotenv.config({
-  path: `${__dirname}/../.env`,
-});
-
-// The communities that should be summarized.
-const communities = [
-  'technology',
-  'science',
-  'news',
-  'Politics',
-  'programming',
-  'Entertainment',
-  'Europe',
-  'AussieNews',
-  'reactjs',
-];
-
-// The domains that shouldn't be summarized because smmry breaks.
-const bannedDomains = [
-  'news.yahoo.com', // It's asking the bot to login.
-  'www.nbcnews.com', // Complains about cookies.
-  'archive.is', // Compiling about the connection.
-];
+import { Communities, BannedSites } from './modals';
 
 (async () => {
   // Summaries are created by https://smmry.com
@@ -59,6 +37,24 @@ const bannedDomains = [
     logger.error('Failed to login');
     process.exit(1);
   }
+
+  // Initialize the database.
+  await Communities.sync({ alter: true });
+  await BannedSites.sync({ alter: true });
+
+  // The communities that should be summarized.
+  const communities: string[] = [];
+  const c = await Communities.findAll();
+  c.forEach((community) => {
+    communities.push(community.dataValues.name);
+  });
+
+  // The domains that shouldn't be summarized because smmry breaks.
+  const bannedDomains: string[] = [];
+  const b = await BannedSites.findAll();
+  b.forEach((site) => {
+    bannedDomains.push(site.dataValues.hostname);
+  });
 
   // Check the latest posts and summarize them.
   const posts = await discuit.getPosts('latest', 50);
@@ -130,5 +126,6 @@ const bannedDomains = [
   }
 
   logger.info('Done.');
+  await sequelize.close();
   process.exit(0);
 })();
