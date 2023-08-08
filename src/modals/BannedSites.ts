@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../database';
+import { sequelize } from '../sequelize';
 
 /**
  * Modal for sites that should be ignored because smmry breaks.

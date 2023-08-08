@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../database';
+import { sequelize } from '../sequelize';
 
 /**
  * Modal for the communities being watched.
