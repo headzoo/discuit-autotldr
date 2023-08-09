@@ -80,9 +80,13 @@ const isCommentingDisabled = os.hostname() === 'sean-ubuntu';
           )}\n\n----\n\nI am a bot. Submit comments to the [discuit community](https://discuit.net/autotldr).`,
         );
 
-        logger.info(
-          `Posted to https://discuit.net/${posted.communityName}/post/${posted.postPublicId}.`,
-        );
+        if (!posted) {
+          logger.error(`Failed to submit post for ${post.link.url}`);
+        } else {
+          logger.info(
+            `Posted to https://discuit.net/${posted.communityName}/post/${posted.postPublicId}.`,
+          );
+        }
       }
     } catch (error) {
       logger.error(error);
