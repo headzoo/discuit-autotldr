@@ -20,6 +20,7 @@ app.use(
     realm: 'autotldr',
   }),
 );
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('views', path.join(__dirname, '/views'));
@@ -57,7 +58,7 @@ app.get('/', async (req: Request, res: Response) => {
 /**
  * Add community.
  */
-app.post('/addCommunity', async (req: Request, res: Response) => {
+app.post('/community', async (req: Request, res: Response) => {
   if (!req.body.community) {
     res.redirect('/');
     return;
@@ -96,7 +97,7 @@ app.get('/removeCommunity', async (req: Request, res: Response) => {
 /**
  * Add banned domain.
  */
-app.post('/addBanned', async (req: Request, res: Response) => {
+app.post('/banned', async (req: Request, res: Response) => {
   if (!req.body.hostname || !req.body.reason) {
     res.redirect('/');
     return;
