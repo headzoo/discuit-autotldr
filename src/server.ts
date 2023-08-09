@@ -49,7 +49,7 @@ app.get('/', async (req: Request, res: Response) => {
   });
 
   const links: (typeof Link)[] = [];
-  (await Link.findAll()).forEach((link) => {
+  (await Link.findAll({ order: [['updatedAt', 'DESC']] })).forEach((link) => {
     links.push(link.dataValues);
   });
 
