@@ -1,8 +1,9 @@
 import express, { Request, Response } from 'express';
 import basicAuth from 'express-basic-auth';
 import path from 'path';
-import { logger } from './logger';
 import { Communities, BannedSites } from './modals';
+import { logger } from './logger';
+import { eventDispatcher } from './events';
 
 if (!process.env.DISCUIT_ADMIN_USERNAME || !process.env.DISCUIT_ADMIN_PASSWORD) {
   logger.error('Missing DISCUIT_ADMIN_USERNAME or DISCUIT_ADMIN_PASSWORD');
@@ -65,6 +66,7 @@ app.post('/addCommunity', async (req: Request, res: Response) => {
   await Communities.create({
     name: req.body.community,
   });
+  eventDispatcher.trigger('rewatch');
 
   res.redirect('/');
 });
@@ -86,6 +88,7 @@ app.get('/removeCommunity', async (req: Request, res: Response) => {
   if (row) {
     await row.destroy();
   }
+  eventDispatcher.trigger('rewatch');
 
   res.redirect('/');
 });
@@ -103,6 +106,7 @@ app.post('/addBanned', async (req: Request, res: Response) => {
     hostname: req.body.hostname,
     reason: req.body.reason,
   });
+  eventDispatcher.trigger('rewatch');
 
   res.redirect('/');
 });
@@ -124,6 +128,7 @@ app.get('/removeBanned', async (req: Request, res: Response) => {
   if (row) {
     await row.destroy();
   }
+  eventDispatcher.trigger('rewatch');
 
   res.redirect('/');
 });

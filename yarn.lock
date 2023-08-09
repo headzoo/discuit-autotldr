@@ -221,6 +221,11 @@
   resolved "https://registry.yarnpkg.com/@types/validator/-/validator-13.11.1.tgz#6560af76ed54490e68c42f717ab4e742ba7be74b"
   integrity sha512-d/MUkJYdOeKycmm75Arql4M5+UuXmf4cHdHKsyw1GcvnNgL6s77UkgSgJ8TE/rI5PYsnwYq5jkcWBLuN/MpQ1A==
 
+EventDispatcher@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/EventDispatcher/-/EventDispatcher-3.2.0.tgz#f4adbc26021b8a8959962edc6927ca9dfe4e566e"
+  integrity sha512-F1/kJRumjHHlHvP9z5vcz1df0qD9jv0Rc5HaK6M24/CnISifyxHPjwny8EvDQKNe+j/qDGKgg1oYKTmJFhrKag==
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
