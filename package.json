@@ -17,7 +17,7 @@
     "watch": "nodemon --watch 'src/**/*.ts' --exec 'node --experimental-specifier-resolution=node --loader ts-node/esm' src/index.ts"
   },
   "dependencies": {
-    "@headz/discuit": "^0.2.1",
+    "@headz/discuit": "^0.2.2",
     "dotenv": "^16.3.1",
     "forever": "^4.0.3",
     "mysql": "^2.18.1",
