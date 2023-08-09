@@ -6,6 +6,7 @@ import { createRedis } from './redis';
 import { createDiscuit } from './discuit';
 import { createDatabase } from './database';
 import { Communities, BannedSites } from './modals';
+import { listen } from './server';
 
 // Run the bot without posting comments. Primarily for testing.
 const isCommentingDisabled = os.hostname() === 'sean-ubuntu';
@@ -68,28 +69,32 @@ const isCommentingDisabled = os.hostname() === 'sean-ubuntu';
     try {
       // Summarize!
       logger.info(`Fetching summary for ${post.link.url}`);
-      const result = await summary.summarizeUrl(post.link.url);
-      if (!isCommentingDisabled && result && result.sm_api_content) {
-        const posted = await discuit.postComment(
-          post.publicId,
-          `This is the best tl;dr I could make, original reduced by ${
-            result.sm_api_content_reduced
-          }.\n\n----\n\n${result.sm_api_content.replace(
-            /\[BREAK]/g,
-            '\n\n',
-          )}\n\n----\n\nI am a bot. Submit comments to the [discuit community](https://discuit.net/autotldr).`,
-        );
-
-        if (!posted) {
-          logger.error(`Failed to submit post for ${post.link.url}`);
-        } else {
-          logger.info(
-            `Posted to https://discuit.net/${posted.communityName}/post/${posted.postPublicId}.`,
+      if (!isCommentingDisabled) {
+        const result = await summary.summarizeUrl(post.link.url);
+        if (result && result.sm_api_content) {
+          const posted = await discuit.postComment(
+            post.publicId,
+            `This is the best tl;dr I could make, original reduced by ${
+              result.sm_api_content_reduced
+            }.\n\n----\n\n${result.sm_api_content.replace(
+              /\[BREAK]/g,
+              '\n\n',
+            )}\n\n----\n\nI am a bot. Submit comments to the [discuit community](https://discuit.net/autotldr).`,
           );
+
+          if (!posted) {
+            logger.error(`Failed to submit post for ${post.link.url}`);
+          } else {
+            logger.info(
+              `Posted to https://discuit.net/${posted.communityName}/post/${posted.postPublicId}.`,
+            );
+          }
         }
       }
     } catch (error) {
       logger.error(error);
     }
   });
+
+  listen();
 })();
