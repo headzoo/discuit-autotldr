@@ -70,7 +70,7 @@ const isCommentingDisabled = os.hostname() === 'sean-ubuntu';
       logger.info(`Fetching summary for ${post.link.url}`);
       const result = await summary.summarizeUrl(post.link.url);
       if (!isCommentingDisabled && result && result.sm_api_content) {
-        const posted = await discuit.comment(
+        const posted = await discuit.postComment(
           post.publicId,
           `This is the best tl;dr I could make, original reduced by ${
             result.sm_api_content_reduced
