@@ -10,6 +10,7 @@ export const Link = sequelize.define(
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
     },
     url: {
       type: DataTypes.STRING,
