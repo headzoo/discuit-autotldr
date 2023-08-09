@@ -13,20 +13,22 @@
     "typescript": "^5.1.6"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp -R src/views dist/views",
     "forever": "forever start -c 'node --experimental-specifier-resolution=node --loader ts-node/esm' src/index.ts",
-    "watch": "nodemon --watch 'src/**/*.ts' --exec 'node --experimental-specifier-resolution=node --loader ts-node/esm' src/index.ts"
+    "watch": "nodemon --watch src --ext 'ts,twig' --exec 'node --experimental-specifier-resolution=node --loader ts-node/esm' src/index.ts"
   },
   "dependencies": {
     "@headz/discuit": "^0.2.3",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-basic-auth": "^1.2.1",
     "forever": "^4.0.3",
     "mysql": "^2.18.1",
     "mysql2": "^3.6.0",
     "redis": "^4.6.7",
     "sequelize": "^6.32.1",
     "smmry": "^1.0.2",
+    "twig": "^1.16.0",
     "winston": "^3.10.0"
   }
 }
