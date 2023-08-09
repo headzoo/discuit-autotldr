@@ -4,7 +4,7 @@ import { sequelize } from '../sequelize';
 /**
  * Modal for the communities being watched.
  */
-export const Communities = sequelize.define(
+export const Community = sequelize.define(
   'communities',
   {
     id: {

@@ -4,7 +4,7 @@ import { sequelize } from '../sequelize';
 /**
  * Modal for sites that should be ignored because smmry breaks.
  */
-export const BannedSites = sequelize.define(
+export const BannedSite = sequelize.define(
   'banned_sites',
   {
     id: {

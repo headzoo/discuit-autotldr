@@ -1,13 +1,14 @@
 import { Sequelize } from 'sequelize';
 import { sequelize } from './sequelize';
-import { Communities, BannedSites } from './modals';
+import { Community, BannedSite, Link } from './modals';
 
 /**
  * Sets up the database and returns a Sequelize instance.
  */
 export const createDatabase = async (): Promise<Sequelize> => {
-  await Communities.sync({ alter: true });
-  await BannedSites.sync({ alter: true });
+  await Community.sync({ alter: true });
+  await BannedSite.sync({ alter: true });
+  await Link.sync({ alter: true });
 
   return sequelize;
 };

@@ -1,7 +1,7 @@
 import { hostname } from 'os';
 import { Discuit } from '@headz/discuit';
 import { RedisSeenChecker } from './RedisSeenChecker';
-import { BannedSites, Communities } from './modals';
+import { BannedSite, Community, Link } from './modals';
 import { createRedis, Redis } from './redis';
 import { createSmmry } from './smmry';
 import { eventDispatcher } from './events';
@@ -54,7 +54,7 @@ export const runDiscuitWatch = async () => {
    */
   const watch = async (): Promise<void> => {
     const bannedDomains: string[] = [];
-    (await BannedSites.findAll()).forEach((site) => {
+    (await BannedSite.findAll()).forEach((site) => {
       bannedDomains.push(site.dataValues.hostname);
     });
 
@@ -117,6 +117,11 @@ I am a bot. Submit comments to the [discuit community](${communityUrl}).`.trim()
             if (!posted) {
               logger.error(`Failed to submit post for ${post.link.url}`);
             } else {
+              await Link.create({
+                url: `https://discuit.net/${posted.communityName}/post/${posted.postPublicId}`,
+                community: post.communityName,
+                source: post.link.url,
+              });
               logger.info(
                 `Posted to https://discuit.net/${posted.communityName}/post/${posted.postPublicId}.`,
               );
@@ -129,7 +134,7 @@ I am a bot. Submit comments to the [discuit community](${communityUrl}).`.trim()
     };
 
     const communities: string[] = [];
-    (await Communities.findAll()).forEach((community) => {
+    (await Community.findAll()).forEach((community) => {
       communities.push(community.dataValues.name);
     });
     discuit.watch(communities, watchCallback);

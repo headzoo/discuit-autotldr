@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import basicAuth from 'express-basic-auth';
 import path from 'path';
-import { Communities, BannedSites } from './modals';
+import { Community, BannedSite, Link } from './modals';
 import { logger } from './logger';
 import { eventDispatcher } from './events';
 
@@ -36,22 +36,28 @@ app.set('twig options', {
 app.get('/', async (req: Request, res: Response) => {
   // The communities that should be summarized.
   const communities: string[] = [];
-  const c = await Communities.findAll();
+  const c = await Community.findAll();
   c.forEach((community) => {
     communities.push(community.dataValues);
   });
 
   // The domains that shouldn't be summarized because smmry breaks.
   const bannedDomains: string[] = [];
-  const b = await BannedSites.findAll();
+  const b = await BannedSite.findAll();
   b.forEach((site) => {
     bannedDomains.push(site.dataValues);
+  });
+
+  const links: (typeof Link)[] = [];
+  (await Link.findAll()).forEach((link) => {
+    links.push(link.dataValues);
   });
 
   res.render('index.html.twig', {
     message: 'Hello World',
     communities,
     bannedDomains,
+    links,
   });
 });
 
@@ -64,7 +70,7 @@ app.post('/community', async (req: Request, res: Response) => {
     return;
   }
 
-  await Communities.create({
+  await Community.create({
     name: req.body.community,
   });
   eventDispatcher.trigger('rewatch');
@@ -81,7 +87,7 @@ app.get('/removeCommunity', async (req: Request, res: Response) => {
     return;
   }
 
-  const row = await Communities.findOne({
+  const row = await Community.findOne({
     where: {
       id: req.query.community,
     },
@@ -103,7 +109,7 @@ app.post('/banned', async (req: Request, res: Response) => {
     return;
   }
 
-  await BannedSites.create({
+  await BannedSite.create({
     hostname: req.body.hostname,
     reason: req.body.reason,
   });
@@ -121,7 +127,7 @@ app.get('/removeBanned', async (req: Request, res: Response) => {
     return;
   }
 
-  const row = await BannedSites.findOne({
+  const row = await BannedSite.findOne({
     where: {
       id: req.query.banned,
     },
