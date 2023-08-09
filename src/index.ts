@@ -1,3 +1,4 @@
+import os from 'os';
 import './config';
 import { logger } from './logger';
 import { createSmmry } from './smmry';
@@ -7,7 +8,7 @@ import { createDatabase } from './database';
 import { Communities, BannedSites } from './modals';
 
 // Run the bot without posting comments. Primarily for testing.
-const isCommentingDisabled = false;
+const isCommentingDisabled = os.hostname() === 'sean-ubuntu';
 
 (async () => {
   await createDatabase();

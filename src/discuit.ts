@@ -12,13 +12,19 @@ export const createDiscuit = async (redis: Redis): Promise<Discuit> => {
     process.exit(1);
   }
 
-  const discuit = new Discuit();
-  discuit.seenChecker = new RedisSeenChecker(redis);
-  const bot = await discuit.login(process.env.DISCUIT_USERNAME, process.env.DISCUIT_PASSWORD);
-  if (!bot) {
+  try {
+    const discuit = new Discuit();
+    discuit.logger = logger;
+    discuit.seenChecker = new RedisSeenChecker(redis);
+    const bot = await discuit.login(process.env.DISCUIT_USERNAME, process.env.DISCUIT_PASSWORD);
+    if (!bot) {
+      logger.error('Failed to login');
+      process.exit(1);
+    }
+
+    return discuit;
+  } catch (error) {
     logger.error('Failed to login');
     process.exit(1);
   }
-
-  return discuit;
 };
