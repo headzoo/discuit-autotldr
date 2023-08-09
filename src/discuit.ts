@@ -41,7 +41,7 @@ export const createDiscuit = async (redis: Redis): Promise<Discuit> => {
  * @param communities The communities to watch.
  * @param bannedDomains The domains that should not be summarized.
  */
-export const runWatchLoop = async (communities: string[], bannedDomains: string[]) => {
+export const runDiscuitWatch = async (communities: string[], bannedDomains: string[]) => {
   const client = await createRedis();
   const summary = await createSmmry();
   const discuit = await createDiscuit(client);

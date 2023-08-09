@@ -1,8 +1,8 @@
 import './config';
 import { Communities, BannedSites } from './modals';
-import { runWatchLoop } from './discuit';
 import { createDatabase } from './database';
-import { listen } from './server';
+import { runDiscuitWatch } from './discuit';
+import { runAdminSite } from './server';
 
 (async () => {
   await createDatabase();
@@ -21,6 +21,6 @@ import { listen } from './server';
     bannedDomains.push(site.dataValues.hostname);
   });
 
-  await runWatchLoop(communities, bannedDomains);
-  listen();
+  await runDiscuitWatch(communities, bannedDomains);
+  runAdminSite();
 })();

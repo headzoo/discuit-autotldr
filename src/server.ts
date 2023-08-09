@@ -132,7 +132,7 @@ app.get('/removeBanned', async (req: Request, res: Response) => {
 /**
  * Starts the admin web server.
  */
-export const listen = () => {
+export const runAdminSite = () => {
   if (!process.env.DISCUIT_ADMIN_PORT) {
     logger.error('Missing DISCUIT_ADMIN_PORT');
     process.exit(1);
