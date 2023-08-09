@@ -8,6 +8,9 @@ import { logger } from './logger';
 // Run the bot without posting comments. Primarily for testing.
 const isCommentingDisabled = hostname() === 'sean-ubuntu';
 
+// The link to the autotldr community.
+const communityUrl = 'https://discuit.net/autotldr';
+
 /**
  * Creates a new Discuit instance and logs in the bot.
  */
@@ -22,6 +25,7 @@ export const createDiscuit = async (redis: Redis): Promise<Discuit> => {
     discuit.logger = logger;
     discuit.watchTimeout = 1000 * 60 * 10; // 10 minutes
     discuit.seenChecker = new RedisSeenChecker(redis);
+
     const bot = await discuit.login(process.env.DISCUIT_USERNAME, process.env.DISCUIT_PASSWORD);
     if (!bot) {
       logger.error('Failed to login');
@@ -87,14 +91,18 @@ export const runDiscuitWatch = async (communities: string[], bannedDomains: stri
       if (!isCommentingDisabled) {
         const result = await summary.summarizeUrl(post.link.url);
         if (result && result.sm_api_content) {
+          const reduced = result.sm_api_content_reduced;
+          const content = result.sm_api_content.replace(/\[BREAK]/g, '\n\n');
+
           const posted = await discuit.postComment(
             post.publicId,
-            `This is the best tl;dr I could make, original reduced by ${
-              result.sm_api_content_reduced
-            }.\n\n----\n\n${result.sm_api_content.replace(
-              /\[BREAK]/g,
-              '\n\n',
-            )}\n\n----\n\nI am a bot. Submit comments to the [discuit community](https://discuit.net/autotldr).`,
+            `This is the best tl;dr I could make, original reduced by ${reduced}.
+
+            ----
+            ${content}
+            ----
+
+            I am a bot. Submit comments to the [discuit community](${communityUrl}).`,
           );
 
           if (!posted) {

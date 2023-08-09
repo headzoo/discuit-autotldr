@@ -23,14 +23,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'twig');
-
 app.set('twig options', {
   allowAsync: true, // Allow asynchronous compiling
   strict_variables: false,
 });
 
 /**
- *
+ * Homepage.
  */
 app.get('/', async (req: Request, res: Response) => {
   // The communities that should be summarized.
@@ -55,7 +54,7 @@ app.get('/', async (req: Request, res: Response) => {
 });
 
 /**
- *
+ * Add community.
  */
 app.post('/addCommunity', async (req: Request, res: Response) => {
   if (!req.body.community) {
@@ -71,7 +70,7 @@ app.post('/addCommunity', async (req: Request, res: Response) => {
 });
 
 /**
- *
+ * Delete community.
  */
 app.get('/removeCommunity', async (req: Request, res: Response) => {
   if (!req.query.community) {
@@ -92,7 +91,7 @@ app.get('/removeCommunity', async (req: Request, res: Response) => {
 });
 
 /**
- *
+ * Add banned domain.
  */
 app.post('/addBanned', async (req: Request, res: Response) => {
   if (!req.body.hostname || !req.body.reason) {
@@ -109,7 +108,7 @@ app.post('/addBanned', async (req: Request, res: Response) => {
 });
 
 /**
- *
+ * Delete banned domain.
  */
 app.get('/removeBanned', async (req: Request, res: Response) => {
   if (!req.query.banned) {
