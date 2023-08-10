@@ -121,6 +121,7 @@ I am a bot. Submit comments to the [discuit community](${communityUrl}).`.trim()
                 url: `https://discuit.net/${posted.communityName}/post/${posted.postPublicId}`,
                 community: post.communityName,
                 source: post.link.url,
+                commentId: posted.id,
               });
               logger.info(
                 `Posted to https://discuit.net/${posted.communityName}/post/${posted.postPublicId}.`,

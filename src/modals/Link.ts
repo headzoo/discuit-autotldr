@@ -21,6 +21,9 @@ export const Link = sequelize.define(
     community: {
       type: DataTypes.STRING,
     },
+    commentId: {
+      type: DataTypes.STRING,
+    },
   },
   {
     timestamps: true,
