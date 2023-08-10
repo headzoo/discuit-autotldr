@@ -34,30 +34,43 @@ app.set('twig options', {
  * Homepage.
  */
 app.get('/', async (req: Request, res: Response) => {
-  // The communities that should be summarized.
-  const communities: string[] = [];
-  const c = await Community.findAll();
-  c.forEach((community) => {
-    communities.push(community.dataValues);
-  });
-
-  // The domains that shouldn't be summarized because smmry breaks.
-  const bannedDomains: string[] = [];
-  const b = await BannedSite.findAll();
-  b.forEach((site) => {
-    bannedDomains.push(site.dataValues);
-  });
-
   const links: (typeof Link)[] = [];
   (await Link.findAll({ order: [['createdAt', 'DESC']] })).forEach((link) => {
     links.push(link.dataValues);
   });
 
   res.render('index.html.twig', {
-    message: 'Hello World',
-    communities,
-    bannedDomains,
     links,
+  });
+});
+
+/**
+ * Communities.
+ */
+app.get('/communities', async (req: Request, res: Response) => {
+  const communities: string[] = [];
+  const c = await Community.findAll();
+  c.forEach((community) => {
+    communities.push(community.dataValues);
+  });
+
+  res.render('communities.html.twig', {
+    communities,
+  });
+});
+
+/**
+ * Banned.
+ */
+app.get('/banned', async (req: Request, res: Response) => {
+  const bannedDomains: string[] = [];
+  const b = await BannedSite.findAll();
+  b.forEach((site) => {
+    bannedDomains.push(site.dataValues);
+  });
+
+  res.render('banned.html.twig', {
+    bannedDomains,
   });
 });
 
@@ -66,7 +79,7 @@ app.get('/', async (req: Request, res: Response) => {
  */
 app.post('/community', async (req: Request, res: Response) => {
   if (!req.body.community) {
-    res.redirect('/');
+    res.redirect('/communities');
     return;
   }
 
@@ -75,7 +88,7 @@ app.post('/community', async (req: Request, res: Response) => {
   });
   eventDispatcher.trigger('rewatch');
 
-  res.redirect('/');
+  res.redirect('/communities');
 });
 
 /**
@@ -83,7 +96,7 @@ app.post('/community', async (req: Request, res: Response) => {
  */
 app.get('/removeCommunity', async (req: Request, res: Response) => {
   if (!req.query.community) {
-    res.redirect('/');
+    res.redirect('/communities');
     return;
   }
 
@@ -97,7 +110,7 @@ app.get('/removeCommunity', async (req: Request, res: Response) => {
   }
   eventDispatcher.trigger('rewatch');
 
-  res.redirect('/');
+  res.redirect('/communities');
 });
 
 /**
@@ -105,7 +118,7 @@ app.get('/removeCommunity', async (req: Request, res: Response) => {
  */
 app.post('/banned', async (req: Request, res: Response) => {
   if (!req.body.hostname || !req.body.reason) {
-    res.redirect('/');
+    res.redirect('/banned');
     return;
   }
 
@@ -115,7 +128,7 @@ app.post('/banned', async (req: Request, res: Response) => {
   });
   eventDispatcher.trigger('rewatch');
 
-  res.redirect('/');
+  res.redirect('/banned');
 });
 
 /**
@@ -123,7 +136,7 @@ app.post('/banned', async (req: Request, res: Response) => {
  */
 app.get('/removeBanned', async (req: Request, res: Response) => {
   if (!req.query.banned) {
-    res.redirect('/');
+    res.redirect('/banned');
     return;
   }
 
@@ -137,7 +150,7 @@ app.get('/removeBanned', async (req: Request, res: Response) => {
   }
   eventDispatcher.trigger('rewatch');
 
-  res.redirect('/');
+  res.redirect('/banned');
 });
 
 /**

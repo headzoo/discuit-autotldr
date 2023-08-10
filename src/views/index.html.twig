@@ -1,51 +1,5 @@
 {% extends "base.html.twig" %}
 {% block body %}
-  <h4>Community</h4>
-  <form action="/community" method="post" class="mb-3">
-    <label for="input-community" class="form-label visually-hidden">Add Community</label>
-    <div class="d-flex justify-content-end">
-      <input id="input-community" class="form-control me-2" type="text" name="community" placeholder="Community" />
-      <button class="btn btn-secondary">Add</button>
-    </div>
-  </form>
-  <table class="table table-striped table-bordered table-hover mb-5">
-    <tbody>
-      {% for community in communities %}
-        <tr>
-          <td>{{ community.name }}</td>
-          <td class="collapsed">
-            <a href="/removeCommunity?community={{ community.id }}" class="btn btn-secondary btn-sm">Remove</a>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  <h4>Banned Sites</h4>
-  <form action="/banned" method="post" class="mb-3">
-    <label for="input-hostname" class="form-label visually-hidden">Add Banned Site</label>
-    <label for="input-reason" class="form-label visually-hidden">Reason</label>
-    <div class="d-flex">
-      <input id="input-hostname" class="form-control me-2" type="text" name="hostname" placeholder="Hostname" />
-      <input id="input-reason" class="form-control me-2" type="text" name="reason" placeholder="Reason" />
-      <button class="btn btn-secondary">Add</button>
-    </div>
-  </form>
-
-  <table class="table table-striped table-bordered table-hover mb-5">
-    <tbody>
-      {% for banned in bannedDomains %}
-        <tr>
-          <td>{{ banned.hostname }}</td>
-          <td>{{ banned.reason }}</td>
-          <td class="collapsed">
-            <a href="/removeBanned?banned={{ banned.id }}" class="btn btn-secondary btn-sm">Remove</a>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
   <h4>Links</h4>
   <table class="table table-striped table-bordered table-hover mb-5">
     <tbody>
