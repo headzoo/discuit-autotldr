@@ -48,6 +48,7 @@ export const runDiscuitWatch = async () => {
   const redis = await createRedis();
   const summary = await createSmmry();
   const discuit = await createDiscuit(redis);
+  await redis.incr('discuit-autotldr-run-count');
 
   /**
    * Watches for new posts.

@@ -3,16 +3,25 @@
   <h4>Stats</h4>
 
   <div class="row mb-4">
-    <div class="col-4">
+    <div class="col-3">
       <div class="card card-stats">
         <div class="card-body">
-          <b>{{ stats.watchCount }}</b>
-          <p class="mb-0">Watched</p>
+          <b>{{ stats.runCount }}</b>
+          <p class="mb-0">Started</p>
         </div>
       </div>
     </div>
 
-    <div class="col-4">
+    <div class="col-3">
+      <div class="card card-stats">
+        <div class="card-body">
+          <b>{{ stats.watchCount }}</b>
+          <p class="mb-0">Runs</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-3">
       <div class="card card-stats">
         <div class="card-body">
           <b>{{ stats.bannedCount }}</b>
@@ -21,7 +30,7 @@
       </div>
     </div>
 
-    <div class="col-4">
+    <div class="col-3">
       <div class="card card-stats">
         <div class="card-body">
           <b>{{ stats.summarizedCount }}</b>

@@ -39,6 +39,7 @@ const getStats = async (): Promise<{
   watchCount: number;
   bannedCount: number;
   summarizedCount: number;
+  runCount: number;
 }> => {
   const redis = await createRedis();
   const watchCount = parseInt((await redis.get('discuit-autotldr-watch-count')) || '0', 10);
@@ -48,7 +49,11 @@ const getStats = async (): Promise<{
     10,
   );
 
+  const runCount = parseInt((await redis.get('discuit-autotldr-run-count')) || '0', 10);
+  console.log(runCount);
+
   return {
+    runCount,
     watchCount,
     bannedCount,
     summarizedCount,
