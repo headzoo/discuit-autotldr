@@ -19,11 +19,12 @@
     "incremental": true,
     "plugins": [],
     "outDir": "dist",
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "typeRoots": ["./node_modules/@types", "./src/@types"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "typeRoots": ["./node_modules/@types"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }
