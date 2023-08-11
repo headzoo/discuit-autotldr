@@ -1,13 +1,16 @@
 {% extends "base.html.twig" %}
 {% block head %}
   <style>
+    .card {
+      background-color: #f9f9f9;
+    }
+
     .card a {
       text-decoration: none;
     }
 
     .card-pre {
       white-space: pre-wrap;
-      overflow-x: hidden;
       margin-bottom: 0;
     }
 
@@ -21,7 +24,7 @@
 
   <div class="row mb-4">
     <div class="col-3">
-      <div class="card card-stats">
+      <div class="card card-stats shadow-sm">
         <div class="card-body">
           <b>{{ stats.runCount }}</b>
           <p class="mb-0">Started</p>
@@ -30,7 +33,7 @@
     </div>
 
     <div class="col-3">
-      <div class="card card-stats">
+      <div class="card card-stats shadow-sm">
         <div class="card-body">
           <b>{{ stats.watchCount }}</b>
           <p class="mb-0">Runs</p>
@@ -39,7 +42,7 @@
     </div>
 
     <div class="col-3">
-      <div class="card card-stats">
+      <div class="card card-stats shadow-sm">
         <div class="card-body">
           <b>{{ stats.bannedCount }}</b>
           <p class="mb-0">Banned</p>
@@ -48,7 +51,7 @@
     </div>
 
     <div class="col-3">
-      <div class="card card-stats">
+      <div class="card card-stats shadow-sm">
         <div class="card-body">
           <b>{{ stats.summarizedCount }}</b>
           <p class="mb-0">Summarized</p>
@@ -61,7 +64,7 @@
 
   <div>
     {% for link in links %}
-      <div class="card link mb-3" data-id="{{ link.id }}">
+      <div class="card link shadow-sm mb-3" data-id="{{ link.id }}">
         <div class="card-body pb-0 d-flex justify-content-between">
           <div class="d-flex flex-column">
             <h6 class="mb-0">{{ link.community }}</h6>
@@ -74,14 +77,17 @@
                 <a href="{{ link.url }}/{{ link.commentId }}" target="_blank" rel="noreferrer noopener">#{{ link.commentId }}</a>
               </div>
             </div>
-            <button data-id="{{ link.id }}" class="btn-delete btn btn-danger btn-sm d-flex align-items-center justify-content-center">
+            <button
+              data-id="{{ link.id }}"
+              class="btn-delete btn btn-danger btn-sm d-flex align-items-center justify-content-center"
+              style="width: 50px;"
+              {% if not link.postId %}disabled{% endif %}
+            >
               <i class="fa-solid fa-xmark"></i>
             </button>
           </div>
         </div>
-        <div class="card card-pre px-2 m-3">
-{{ link.markdown }}
-        </div>
+        <div class="card card-pre p-2 m-3" style="background-color: #FFF;">{{ link.markdown }}</div>
       </div>
     {% endfor %}
   </div>
@@ -99,6 +105,9 @@
 
     document.querySelectorAll('.btn-delete').forEach(btn => {
       btn.addEventListener('click', e => {
+        if (!confirm('Are you sure you want to delete this link?')) {
+          return;
+        }
         const id = e.target.dataset.id;
         deleteLink(id);
       });

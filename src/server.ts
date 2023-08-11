@@ -199,6 +199,9 @@ app.get('/removeBanned', async (req: Request, res: Response) => {
   res.redirect('/banned');
 });
 
+/**
+ * Deletes a link.
+ */
 app.delete(`/links/:id`, async (req: Request, res: Response) => {
   const link = await Link.findOne({
     where: {
@@ -210,22 +213,20 @@ app.delete(`/links/:id`, async (req: Request, res: Response) => {
     return;
   }
 
-  console.log(link.dataValues);
-
-  /*await Link.update(
+  await Link.update(
     {
       isDeleted: true,
     },
     {
       where: {
         id: req.params.id,
-      }
-    }
-  );*/
+      },
+    },
+  );
 
   const redis = await createRedis();
   const discuit = await createDiscuit(redis);
-  // await discuit.deleteComment(link.dataValues.commentId);
+  await discuit.deleteComment(link.dataValues.postId, link.dataValues.commentId);
 
   res.json(req.params.id);
 });
