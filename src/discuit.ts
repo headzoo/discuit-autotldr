@@ -121,6 +121,7 @@ I am a bot. Submit comments to the [discuit community](${communityUrl}).`.trim()
               await Link.create({
                 url: `https://discuit.net/${posted.communityName}/post/${posted.postPublicId}`,
                 community: post.communityName,
+                title: post.title,
                 source: post.link.url,
                 commentId: posted.id,
                 markdown,
