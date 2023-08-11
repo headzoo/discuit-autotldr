@@ -4,8 +4,9 @@ import path from 'path';
 import { Community, BannedSite, Link } from './modals';
 import { logger } from './logger';
 import { eventDispatcher } from './events';
-import packageJson from '../package.json';
 import { createRedis } from './redis';
+import { createDiscuit } from './discuit';
+import packageJson from '../package.json';
 
 if (!process.env.DISCUIT_ADMIN_USERNAME || !process.env.DISCUIT_ADMIN_PASSWORD) {
   logger.error('Missing DISCUIT_ADMIN_USERNAME or DISCUIT_ADMIN_PASSWORD');
@@ -196,6 +197,37 @@ app.get('/removeBanned', async (req: Request, res: Response) => {
   eventDispatcher.trigger('rewatch');
 
   res.redirect('/banned');
+});
+
+app.delete(`/links/:id`, async (req: Request, res: Response) => {
+  const link = await Link.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
+  if (!link) {
+    res.json(req.params.id);
+    return;
+  }
+
+  console.log(link.dataValues);
+
+  /*await Link.update(
+    {
+      isDeleted: true,
+    },
+    {
+      where: {
+        id: req.params.id,
+      }
+    }
+  );*/
+
+  const redis = await createRedis();
+  const discuit = await createDiscuit(redis);
+  // await discuit.deleteComment(link.dataValues.commentId);
+
+  res.json(req.params.id);
 });
 
 /**

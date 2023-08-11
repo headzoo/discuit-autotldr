@@ -123,7 +123,9 @@ I am a bot. Submit comments to the [discuit community](${communityUrl}).`.trim()
                 community: post.communityName,
                 title: post.title,
                 source: post.link.url,
+                postId: post.id,
                 commentId: posted.id,
+                isDeleted: false,
                 markdown,
               });
               logger.info(
@@ -141,13 +143,13 @@ I am a bot. Submit comments to the [discuit community](${communityUrl}).`.trim()
     (await Community.findAll()).forEach((community) => {
       communities.push(community.dataValues.name);
     });
-    discuit.watch(communities, watchCallback);
+    discuit.watchPosts(communities, watchCallback);
   };
 
   // Listen for the admin site reloading the list of communities.
   eventDispatcher.on('rewatch', async () => {
     logger.debug('Rewatching');
-    discuit.unwatch();
+    discuit.unwatchPosts();
     await watch();
   });
 

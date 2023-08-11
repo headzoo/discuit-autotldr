@@ -61,17 +61,22 @@
 
   <div>
     {% for link in links %}
-      <div class="card mb-3">
+      <div class="card link mb-3" data-id="{{ link.id }}">
         <div class="card-body pb-0 d-flex justify-content-between">
           <div class="d-flex flex-column">
             <h6 class="mb-0">{{ link.community }}</h6>
             <a href="{{ link.url }}" target="_blank" rel="noreferrer noopener">{{ link.url }}</a>
           </div>
-          <div class="d-flex flex-column">
-            <div>{{ link.createdAt|date('l, M jS Y, g:ma') }}</div>
-            <div>
-              <a href="{{ link.url }}/{{ link.commentId }}" target="_blank" rel="noreferrer noopener">#{{ link.commentId }}</a>
+          <div class="d-flex">
+            <div class="d-flex flex-column me-2">
+              <div>{{ link.createdAt|date('l, M jS Y, g:ma') }}</div>
+              <div>
+                <a href="{{ link.url }}/{{ link.commentId }}" target="_blank" rel="noreferrer noopener">#{{ link.commentId }}</a>
+              </div>
             </div>
+            <button data-id="{{ link.id }}" class="btn-delete btn btn-danger btn-sm d-flex align-items-center justify-content-center">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
           </div>
         </div>
         <div class="card card-pre px-2 m-3">
@@ -80,4 +85,23 @@
       </div>
     {% endfor %}
   </div>
+{% endblock %}
+{% block foot %}
+  <script>
+    function deleteLink(id) {
+      fetch('/links/' + id, {
+        method: 'DELETE',
+      })
+        .then(() => {
+          document.querySelector('.link[data-id="' + id + '"]').remove();
+        });
+    }
+
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const id = e.target.dataset.id;
+        deleteLink(id);
+      });
+    });
+  </script>
 {% endblock %}

@@ -21,6 +21,9 @@ export const Link = sequelize.define(
     community: {
       type: DataTypes.STRING,
     },
+    postId: {
+      type: DataTypes.STRING,
+    },
     commentId: {
       type: DataTypes.STRING,
     },
@@ -29,6 +32,9 @@ export const Link = sequelize.define(
     },
     markdown: {
       type: DataTypes.TEXT,
+    },
+    isDeleted: {
+      type: DataTypes.BOOLEAN,
     },
   },
   {
