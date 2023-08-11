@@ -67,8 +67,11 @@
             <h6 class="mb-0">{{ link.community }}</h6>
             <a href="{{ link.url }}" target="_blank" rel="noreferrer noopener">{{ link.url }}</a>
           </div>
-          <div>
-            {{ link.createdAt|date('l, M jS Y, g:ma') }}
+          <div class="d-flex flex-column">
+            <div>{{ link.createdAt|date('l, M jS Y, g:ma') }}</div>
+            <div>
+              <a href="{{ link.url }}/{{ link.commentId }}" target="_blank" rel="noreferrer noopener">#{{ link.commentId }}</a>
+            </div>
           </div>
         </div>
         <div class="card card-pre px-2 m-3">
