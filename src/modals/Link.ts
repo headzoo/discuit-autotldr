@@ -24,6 +24,9 @@ export const Link = sequelize.define(
     commentId: {
       type: DataTypes.STRING,
     },
+    markdown: {
+      type: DataTypes.TEXT,
+    },
   },
   {
     timestamps: true,

@@ -40,6 +40,7 @@ app.get('/', async (req: Request, res: Response) => {
   });
 
   res.render('index.html.twig', {
+    activeTab: 'home',
     links,
   });
 });
@@ -55,6 +56,7 @@ app.get('/communities', async (req: Request, res: Response) => {
   });
 
   res.render('communities.html.twig', {
+    activeTab: 'communities',
     communities,
   });
 });
@@ -70,6 +72,7 @@ app.get('/banned', async (req: Request, res: Response) => {
   });
 
   res.render('banned.html.twig', {
+    activeTab: 'banned',
     bannedDomains,
   });
 });

@@ -1,6 +1,9 @@
 {% extends "base.html.twig" %}
 {% block body %}
-  <h4>Banned Sites</h4>
+  <h4 class="mb-0">Banned Sites</h4>
+  <p class="mb-2">
+    Sites that are ignored.
+  </p>
   <form action="/banned" method="post" class="mb-3">
     <label for="input-hostname" class="form-label visually-hidden">Add Banned Site</label>
     <label for="input-reason" class="form-label visually-hidden">Reason</label>

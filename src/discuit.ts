@@ -101,19 +101,16 @@ export const runDiscuitWatch = async () => {
           if (result && result.sm_api_content) {
             const reduced = result.sm_api_content_reduced;
             const content = result.sm_api_content.replace(/\[BREAK]/g, '\n\n');
-
-            const posted = await discuit.postComment(
-              post.publicId,
-              `
+            const markdown = `
 This is the best tl;dr I could make, original reduced by ${reduced}.
 
 ----
 ${content}
 ----
 
-I am a bot. Submit comments to the [discuit community](${communityUrl}).`.trim(),
-            );
+I am a bot. Submit comments to the [discuit community](${communityUrl}).`.trim();
 
+            const posted = await discuit.postComment(post.publicId, markdown);
             if (!posted) {
               logger.error(`Failed to submit post for ${post.link.url}`);
             } else {
@@ -122,6 +119,7 @@ I am a bot. Submit comments to the [discuit community](${communityUrl}).`.trim()
                 community: post.communityName,
                 source: post.link.url,
                 commentId: posted.id,
+                markdown,
               });
               logger.info(
                 `Posted to https://discuit.net/${posted.communityName}/post/${posted.postPublicId}.`,

@@ -21,6 +21,12 @@
       width: 1%;
       white-space: nowrap;
     }
+
+    .nav-link.active {
+      border-radius: 0.5rem;
+      border-color: #565e64;
+      box-shadow: 0 0 0 0.25rem rgba(130,138,145,.5);
+    }
   </style>
 </head>
 <body>
@@ -28,7 +34,7 @@
   <div class="container-fluid">
     <a class="navbar-brand" href="/">
       <img src="/assets/images/logo.jpg" class="me-2" alt=""/>
-      <span class="text-light">autotldr</span>
+      <span class="text-light" style="font-size: 1.5rem;">autotldr</span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,13 +43,13 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav m-auto mb-2 mb-lg-0">
         <li class="nav-item me-3">
-          <a class="nav-link text-light" href="/" style="font-size: 1.2rem">Links</a>
+          <a class="nav-link text-light{% if activeTab == "home" %} active{% endif %}" href="/" style="font-size: 1.2rem">Links</a>
         </li>
         <li class="nav-item me-3">
-          <a class="nav-link text-light" href="/communities" style="font-size: 1.2rem">Communities</a>
+          <a class="nav-link text-light{% if activeTab == "communities" %} active{% endif %}" href="/communities" style="font-size: 1.2rem">Communities</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-light" href="/banned" style="font-size: 1.2rem">Banned</a>
+          <a class="nav-link text-light{% if activeTab == "banned" %} active{% endif %}" href="/banned" style="font-size: 1.2rem">Banned</a>
         </li>
       </ul>
     </div>
