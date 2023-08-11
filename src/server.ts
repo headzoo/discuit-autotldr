@@ -63,13 +63,15 @@ const getStats = async (): Promise<{
  * Homepage.
  */
 app.get('/', async (req: Request, res: Response) => {
+  const stats = await getStats();
+  console.log(stats);
   const links: (typeof Link)[] = [];
   (await Link.findAll({ order: [['createdAt', 'DESC']] })).forEach((link) => {
     links.push(link.dataValues);
   });
 
   res.render('index.html.twig', {
-    stats: await getStats(),
+    stats,
     version: packageJson.version,
     activeTab: 'home',
     links,
