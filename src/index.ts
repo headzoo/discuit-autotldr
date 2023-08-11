@@ -5,6 +5,6 @@ import { runAdminSite } from './server';
 
 (async () => {
   await createDatabase();
-  await runDiscuitWatch();
+  // await runDiscuitWatch();
   await runAdminSite();
 })();

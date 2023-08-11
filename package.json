@@ -1,7 +1,7 @@
 {
   "name": "@headz/autotldr",
   "version": "0.2.0",
-  "main": "index.js",
+  "main": "dist/src/index.js",
   "license": "MIT",
   "devDependencies": {
     "@types/express": "^4.17.17",

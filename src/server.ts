@@ -64,11 +64,18 @@ const getStats = async (): Promise<{
  */
 app.get('/', async (req: Request, res: Response) => {
   const stats = await getStats();
-  console.log(stats);
   const links: (typeof Link)[] = [];
   (await Link.findAll({ order: [['createdAt', 'DESC']] })).forEach((link) => {
     links.push(link.dataValues);
   });
+
+  for (let i = 0; i < links.length; i++) {
+    const link = links[i] as any;
+    if (link.markdown) {
+      const lines = link.markdown.split('\n').splice(3);
+      link.markdown = lines.filter((x, i) => i + 5 < lines.length).join('\n');
+    }
+  }
 
   res.render('index.html.twig', {
     stats,
