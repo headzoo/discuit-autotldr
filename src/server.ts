@@ -4,6 +4,8 @@ import path from 'path';
 import { Community, BannedSite, Link } from './modals';
 import { logger } from './logger';
 import { eventDispatcher } from './events';
+import packageJson from '../package.json';
+import { createRedis } from './redis';
 
 if (!process.env.DISCUIT_ADMIN_USERNAME || !process.env.DISCUIT_ADMIN_PASSWORD) {
   logger.error('Missing DISCUIT_ADMIN_USERNAME or DISCUIT_ADMIN_PASSWORD');
@@ -31,6 +33,29 @@ app.set('twig options', {
 });
 
 /**
+ * Gets the bot stats.
+ */
+const getStats = async (): Promise<{
+  watchCount: number;
+  bannedCount: number;
+  summarizedCount: number;
+}> => {
+  const redis = await createRedis();
+  const watchCount = parseInt((await redis.get('discuit-autotldr-watch-count')) || '0', 10);
+  const bannedCount = parseInt((await redis.get('discuit-autotldr-banned-count')) || '0', 10);
+  const summarizedCount = parseInt(
+    (await redis.get('discuit-autotldr-summarize-count')) || '0',
+    10,
+  );
+
+  return {
+    watchCount,
+    bannedCount,
+    summarizedCount,
+  };
+};
+
+/**
  * Homepage.
  */
 app.get('/', async (req: Request, res: Response) => {
@@ -40,6 +65,8 @@ app.get('/', async (req: Request, res: Response) => {
   });
 
   res.render('index.html.twig', {
+    stats: await getStats(),
+    version: packageJson.version,
     activeTab: 'home',
     links,
   });
@@ -56,6 +83,7 @@ app.get('/communities', async (req: Request, res: Response) => {
   });
 
   res.render('communities.html.twig', {
+    version: packageJson.version,
     activeTab: 'communities',
     communities,
   });
@@ -72,6 +100,7 @@ app.get('/banned', async (req: Request, res: Response) => {
   });
 
   res.render('banned.html.twig', {
+    version: packageJson.version,
     activeTab: 'banned',
     bannedDomains,
   });

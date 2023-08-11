@@ -45,9 +45,9 @@ export const createDiscuit = async (redis: Redis): Promise<Discuit> => {
  * Watches for new posts in the given communities.
  */
 export const runDiscuitWatch = async () => {
-  const client = await createRedis();
+  const redis = await createRedis();
   const summary = await createSmmry();
-  const discuit = await createDiscuit(client);
+  const discuit = await createDiscuit(redis);
 
   /**
    * Watches for new posts.
@@ -61,9 +61,10 @@ export const runDiscuitWatch = async () => {
     // Called when a new post is found.
     const watchCallback = async (community: string, post: any) => {
       logger.info(`Checking https://discuit.net/${post.communityName}/post/${post.publicId}`);
+      await redis.incr('discuit-autotldr-watch-count');
 
       // Has the post already been summaried?
-      const isSummaried = await client.get(`discuit-autotldr-read-${post.id}`);
+      const isSummaried = await redis.get(`discuit-autotldr-read-${post.id}`);
       if (isSummaried) {
         logger.info(
           `Skipping https://discuit.net/${post.communityName}/post/${post.publicId} as it has already been checked.`,
@@ -81,6 +82,7 @@ export const runDiscuitWatch = async () => {
 
       // Skip when the post is a banned domain.
       if (bannedDomains.includes(post.link.hostname)) {
+        await redis.incr('discuit-autotldr-banned-count');
         logger.info(
           `Skipping https://discuit.net/${post.communityName}/post/${post.publicId} as it is a banned domain.`,
         );
@@ -91,7 +93,8 @@ export const runDiscuitWatch = async () => {
       // writes a comment doesn't matter. We'll flag it now, so it doesn't keep coming back
       // around in case posting the comment is failing for some reason. We'll just skip it
       // when it's failing.
-      await client.set(`discuit-autotldr-read-${post.id}`, 'true');
+      await redis.set(`discuit-autotldr-read-${post.id}`, 'true');
+      await redis.incr('discuit-autotldr-summarize-count');
 
       try {
         // Summarize!

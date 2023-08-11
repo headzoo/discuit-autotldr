@@ -1,5 +1,36 @@
 {% extends "base.html.twig" %}
 {% block body %}
+  <h4>Stats</h4>
+
+  <div class="row mb-4">
+    <div class="col-4">
+      <div class="card card-stats">
+        <div class="card-body">
+          <b>{{ stats.watchCount }}</b>
+          <p class="mb-0">Watched</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="card card-stats">
+        <div class="card-body">
+          <b>{{ stats.bannedCount }}</b>
+          <p class="mb-0">Banned</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="card card-stats">
+        <div class="card-body">
+          <b>{{ stats.summarizedCount }}</b>
+          <p class="mb-0">Summarized</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <h4 class="mb-0">Links</h4>
   <p class="mb-2">
     Generated links.

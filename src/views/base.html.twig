@@ -27,6 +27,17 @@
       border-color: #565e64;
       box-shadow: 0 0 0 0.25rem rgba(130,138,145,.5);
     }
+
+    .card-stats .card-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card-stats b {
+      font-size: 3rem;
+    }
   </style>
 </head>
 <body>
@@ -52,6 +63,10 @@
           <a class="nav-link text-light{% if activeTab == "banned" %} active{% endif %}" href="/banned" style="font-size: 1.2rem">Banned</a>
         </li>
       </ul>
+
+      <div class="ms-auto text-light">
+        v{{ version }}
+      </div>
     </div>
   </div>
 </nav>
