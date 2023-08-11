@@ -50,7 +50,6 @@ const getStats = async (): Promise<{
   );
 
   const runCount = parseInt((await redis.get('discuit-autotldr-run-count')) || '0', 10);
-  console.log(runCount);
 
   return {
     runCount,
