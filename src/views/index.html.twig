@@ -26,6 +26,15 @@
     <div class="col-3">
       <div class="card card-stats shadow-sm">
         <div class="card-body">
+          <b>{{ count }}</b>
+          <p class="mb-0">Created</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-3">
+      <div class="card card-stats shadow-sm">
+        <div class="card-body">
           <b>{{ stats.runCount }}</b>
           <p class="mb-0">Started</p>
         </div>
@@ -46,15 +55,6 @@
         <div class="card-body">
           <b>{{ stats.bannedCount }}</b>
           <p class="mb-0">Banned</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-3">
-      <div class="card card-stats shadow-sm">
-        <div class="card-body">
-          <b>{{ stats.summarizedCount }}</b>
-          <p class="mb-0">Summarized</p>
         </div>
       </div>
     </div>

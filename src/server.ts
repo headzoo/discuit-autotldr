@@ -64,9 +64,20 @@ const getStats = async (): Promise<{
  * Homepage.
  */
 app.get('/', async (req: Request, res: Response) => {
-  const stats = await getStats();
+  const limit = 5;
+  let page = parseInt((req.query.page as string) || '1', 10);
+  if (page < 1) {
+    page = 1;
+  }
+
   const links: (typeof Link)[] = [];
-  (await Link.findAll({ order: [['createdAt', 'DESC']] })).forEach((link) => {
+  const result = await Link.findAndCountAll({
+    order: [['createdAt', 'DESC']],
+    limit,
+    offset: (page - 1) * limit,
+  });
+  const totalPages = Math.ceil(result.count / limit);
+  result.rows.forEach((link) => {
     links.push(link.dataValues);
   });
 
@@ -79,9 +90,11 @@ app.get('/', async (req: Request, res: Response) => {
   }
 
   res.render('index.html.twig', {
-    stats,
+    stats: await getStats(),
     version: packageJson.version,
     activeTab: 'home',
+    count: result.count,
+    totalPages,
     links,
   });
 });
