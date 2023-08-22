@@ -24,7 +24,7 @@ export const createDiscuit = async (redis: Redis): Promise<Discuit> => {
 
   try {
     const discuit = new Discuit();
-    discuit.logger = logger;
+    discuit.setLogger(logger);
     discuit.watchTimeout = 1000 * 60 * 10; // 10 minutes
     discuit.seenChecker = new RedisSeenChecker(redis);
 
