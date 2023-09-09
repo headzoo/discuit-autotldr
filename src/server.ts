@@ -64,7 +64,7 @@ const getStats = async (): Promise<{
  * Homepage.
  */
 app.get('/', async (req: Request, res: Response) => {
-  const limit = 5;
+  const limit = 50;
   let page = parseInt((req.query.page as string) || '1', 10);
   if (page < 1) {
     page = 1;
